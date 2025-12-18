@@ -480,3 +480,4 @@ For questions or issues, check the [FAQ page](/#/faq) or reach out via WhatsApp 
 ---
 
 **Made with ❤️ for premium fireworks showcases. Ready to deploy. Pure vibe. Zero backend.🔥**
+# Updated: Manual Deploy
