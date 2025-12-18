@@ -5,9 +5,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#000000" />
-    <meta name="description" content="TK Fireworks – Premium 3D Fireworks Product Showcase" />
+    <meta
+      name="description"
+      content="TK Fireworks – Premium 3D Fireworks Product Showcase"
+    />
 
-    <!-- Open Graph / Social -->
+    <!-- Open Graph -->
     <meta property="og:title" content="TK Fireworks" />
     <meta
       property="og:description"
@@ -20,7 +23,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="TK Fireworks" />
 
-    <!-- PWA -->
+    <!-- PWA Manifest -->
     <link rel="manifest" href="/tk-fireworks-showcase/manifest.json" />
 
     <!-- Favicon -->
@@ -36,25 +39,45 @@
   </head>
 
   <body class="bg-dark-bg text-white">
-    <!-- App Root -->
+    <!-- ================= EMERGENCY CLEANUP ================= -->
+    <!-- Runs ONCE to fix broken SW / cache issues -->
+    <script>
+      (async () => {
+        if ('serviceWorker' in navigator) {
+          const registrations = await navigator.serviceWorker.getRegistrations()
+          for (const reg of registrations) {
+            await reg.unregister()
+            console.log('🗑️ Service Worker unregistered')
+          }
+        }
+
+        if ('caches' in window) {
+          const cacheNames = await caches.keys()
+          await Promise.all(cacheNames.map(name => caches.delete(name)))
+          console.log('🧹 Cache storage cleared')
+        }
+      })()
+    </script>
+    <!-- ===================================================== -->
+
+    <!-- React App Root -->
     <div id="root"></div>
 
-    <!-- Main App Entry -->
+    <!-- App Entry -->
     <script type="module" src="/src/main.tsx"></script>
 
-    <!-- Service Worker (Debug Safe) -->
+    <!-- ================= OPTIONAL PWA ================= -->
+    <!-- ENABLE ONLY AFTER CONFIRMING APP IS STABLE -->
+    <!--
     <script>
       if ('serviceWorker' in navigator) {
-        console.log('ℹ️ Attempting Service Worker registration...');
         navigator.serviceWorker
           .register('/tk-fireworks-showcase/service-worker.js')
           .then(() => console.log('✅ PWA Service Worker registered'))
-          .catch(error =>
-            console.error('❌ PWA Service Worker registration failed:', error)
-          );
-      } else {
-        console.log('⚠️ Service Worker not supported in this browser');
+          .catch(err => console.error('❌ SW registration failed:', err))
       }
     </script>
+    -->
+    <!-- ================================================= -->
   </body>
 </html>
