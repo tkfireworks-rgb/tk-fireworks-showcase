@@ -1,53 +1,79 @@
 import { Suspense } from 'react';
+import { HashRouter } from 'react-router-dom';
 import { useTheme } from './hooks/useTheme';
 import { useFavorites } from './hooks/useFavorites';
 import { useGA4 } from './hooks/useGA4';
-import { AppRouter } from './router/AppRouter';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { motion } from 'framer-motion';
+import { Routes, Route } from 'react-router-dom';
+import { Home } from './pages/Home';
+import { Catalog } from './pages/Catalog';
+import { ProductDetail } from './pages/ProductDetail';
+import { Gallery } from './pages/Gallery';
+import { FAQ } from './pages/FAQ';
+import { Safety } from './pages/Safety';
+import { About } from './pages/About';
+import { Contact } from './pages/Contact';
+import { Shortlist } from './pages/Shortlist';
+import { BulkOrders } from './pages/BulkOrders';
+import { DiwaliOffers } from './pages/DiwaliOffers';
+import { Events } from './pages/Events';
+import configData from './data/config.json';
 
 function App() {
   const { theme: currentTheme } = useTheme();
   const { favorites } = useFavorites();
-  const { trackEvent } = useGA4();
+  useGA4();
 
-  // Track page view
   const theme = currentTheme as any;
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.3 }}
-      className="bg-dark-bg text-white min-h-screen"
-      style={{
-        background: theme?.background || 'linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%)',
-      }}
-    >
-      {/* Global Floating WhatsApp Button */}
-      <FloatingWhatsAppButton theme={theme} />
+    <HashRouter>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.3 }}
+        className="bg-dark-bg text-white min-h-screen"
+        style={{
+          background: theme?.background || 'linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%)',
+        }}
+      >
+        {/* Global Floating WhatsApp Button */}
+        <FloatingWhatsAppButton theme={theme} />
 
-      {/* Navigation */}
-      <Navbar theme={theme} favoritesCount={favorites.length} />
+        {/* Navigation */}
+        <Navbar theme={theme} favoritesCount={favorites.length} />
 
-      {/* Routes */}
-      <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
-        <AppRouter theme={theme} favoritesCount={favorites.length} />
-      </Suspense>
+        {/* Routes */}
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+          <Routes>
+            <Route path="/" element={<Home theme={theme} />} />
+            <Route path="/catalog" element={<Catalog theme={theme} />} />
+            <Route path="/product/:id" element={<ProductDetail theme={theme} />} />
+            <Route path="/gallery" element={<Gallery theme={theme} />} />
+            <Route path="/faq" element={<FAQ theme={theme} />} />
+            <Route path="/safety" element={<Safety theme={theme} />} />
+            <Route path="/about" element={<About theme={theme} />} />
+            <Route path="/contact" element={<Contact theme={theme} />} />
+            <Route path="/shortlist" element={<Shortlist theme={theme} />} />
+            <Route path="/bulk" element={<BulkOrders theme={theme} />} />
+            <Route path="/diwali" element={<DiwaliOffers theme={theme} />} />
+            <Route path="/events" element={<Events theme={theme} />} />
+          </Routes>
+        </Suspense>
 
-      {/* Footer */}
-      <Footer theme={theme} />
-    </motion.div>
+        {/* Footer */}
+        <Footer theme={theme} />
+      </motion.div>
+    </HashRouter>
   );
 }
 
 const FloatingWhatsAppButton: React.FC<{ theme: any }> = ({ theme }) => {
   const handleClick = () => {
-    import('./data/config.json').then((config) => {
-      const message = encodeURIComponent(config.default.whatsappDefaultMessage);
-      window.open(`https://wa.me/${config.default.whatsappNumber}?text=${message}`, '_blank');
-    });
+    const message = encodeURIComponent(configData.whatsappDefaultMessage);
+    window.open(`https://wa.me/${configData.whatsappNumber}?text=${message}`, '_blank');
   };
 
   return (
@@ -65,3 +91,4 @@ const FloatingWhatsAppButton: React.FC<{ theme: any }> = ({ theme }) => {
 };
 
 export default App;
+
