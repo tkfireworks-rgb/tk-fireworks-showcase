@@ -1,28 +1,59 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- Basic Meta -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#000000" />
-    <meta name="description" content="TK Fireworks - Premium 3D Fireworks Product Showcase" />
+    <meta name="description" content="TK Fireworks – Premium 3D Fireworks Product Showcase" />
+
+    <!-- Open Graph / Social -->
     <meta property="og:title" content="TK Fireworks" />
-    <meta property="og:description" content="Display-only premium fireworks product catalog with WhatsApp enquiry integration" />
+    <meta
+      property="og:description"
+      content="Display-only premium fireworks product catalog with WhatsApp enquiry integration"
+    />
     <meta property="og:type" content="website" />
+
+    <!-- Apple PWA -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="TK Fireworks" />
+
+    <!-- PWA -->
     <link rel="manifest" href="/tk-fireworks-showcase/manifest.json" />
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75'>🔥</text></svg>" />
+
+    <!-- Favicon -->
+    <link
+      rel="icon"
+      href="data:image/svg+xml,
+      <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>
+        <text y='75' font-size='75'>🔥</text>
+      </svg>"
+    />
+
     <title>TK Fireworks | Premium 3D Fireworks Showcase</title>
   </head>
+
   <body class="bg-dark-bg text-white">
+    <!-- App Root -->
     <div id="root"></div>
+
+    <!-- Main App Entry -->
     <script type="module" src="/src/main.tsx"></script>
+
+    <!-- Service Worker (Debug Safe) -->
     <script>
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/tk-fireworks-showcase/service-worker.js')
+        console.log('ℹ️ Attempting Service Worker registration...');
+        navigator.serviceWorker
+          .register('/tk-fireworks-showcase/service-worker.js')
           .then(() => console.log('✅ PWA Service Worker registered'))
-          .catch(err => console.error('❌ PWA Service Worker registration failed:', err));
+          .catch(error =>
+            console.error('❌ PWA Service Worker registration failed:', error)
+          );
+      } else {
+        console.log('⚠️ Service Worker not supported in this browser');
       }
     </script>
   </body>
